@@ -1,0 +1,44 @@
+@reference "tailwindcss";
+
+@layer components {
+  .card {
+    background: var(--s1);
+    border: 1px solid var(--b1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    @apply rounded-2xl;
+  }
+
+  .btn-flat {
+    background: var(--s1); border: 1px solid var(--b1); color: var(--text);
+    @apply px-4 py-2 rounded-xl text-sm font-medium transition-all;
+  }
+  .btn-flat:hover { background: var(--s2); border-color: var(--b2); }
+
+  .btn-primary {
+    background: var(--i-dim); border: 1px solid rgba(129,140,248,0.3); color: var(--indigo);
+    @apply px-4 py-2 rounded-xl text-sm font-semibold transition-all;
+  }
+  .btn-primary:hover { background: rgba(129,140,248,0.18); }
+
+  .btn-danger  {
+    background: var(--r-dim); border: 1px solid rgba(248,113,113,0.3); color: var(--rose);
+    @apply px-4 py-2 rounded-xl text-sm font-semibold transition-all;
+  }
+  .btn-success {
+    background: var(--e-dim); border: 1px solid rgba(52,211,153,0.3); color: var(--emerald);
+    @apply px-4 py-2 rounded-xl text-sm font-semibold transition-all;
+  }
+
+  .stat-label { font-size: 11px; font-weight: 500; color: var(--muted); }
+  .stat-value { font-weight: 700; font-family: 'JetBrains Mono', monospace; color: var(--text); }
+
+  .status-dot      { @apply w-2 h-2 rounded-full; }
+  .status-active   { background: var(--emerald); }
+  .status-inactive { background: var(--subtle); }
+}
+
+@layer utilities {
+  .flex-center  { @apply flex items-center justify-center; }
+  .flex-between { @apply flex items-center justify-between; }
+}
