@@ -1,0 +1,15 @@
+{
+  "name": "hybrid-lab-lms",
+  "version": "1.0.0",
+  "description": "Минималистичная учебная платформа Hybrid Lab для демонстрации работы гибридного транспортного средства.",
+  "private": true,
+  "scripts": {
+    "start": "echo \"Откройте index.html в браузере (React через CDN).\" && exit 0"
+  },
+  "dependencies": {
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "react-router-dom": "^6.28.0"
+  }
+}
+

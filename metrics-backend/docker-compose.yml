@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  metrics-backend:
+    build: .
+    container_name: metrics-logger
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
