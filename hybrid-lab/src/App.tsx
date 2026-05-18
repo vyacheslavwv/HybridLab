@@ -413,15 +413,18 @@ function DashboardPage({ go }: { go: (p: Page, m?: string) => void }) {
 
 // ── Bento helpers ─────────────────────────────────────────────
 
-function BentoCard({ onClick, col = 1, children }: {
-  onClick: () => void; col?: number; children: React.ReactNode;
+function BentoCard({ onClick, col = 1, accent, children }: {
+  onClick: () => void; col?: number; accent?: string; children: React.ReactNode;
 }) {
   const [hov, setHov] = useState(false);
+  const borderColor = hov
+    ? (accent ?? 'rgba(255,255,255,0.11)')
+    : (accent ? `${accent}33` : 'rgba(255,255,255,0.07)');
   return (
     <div onClick={onClick} style={{
       gridColumn: `span ${col}`,
       background: hov ? 'rgba(255,255,255,0.045)' : 'rgba(255,255,255,0.025)',
-      border: `1px solid ${hov ? 'rgba(255,255,255,0.11)' : 'rgba(255,255,255,0.07)'}`,
+      border: `1px solid ${borderColor}`,
       borderRadius: 20, padding: 24, cursor: 'pointer',
       display: 'flex', flexDirection: 'column',
       transition: 'all 0.18s ease',

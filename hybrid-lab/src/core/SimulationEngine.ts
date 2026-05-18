@@ -4,7 +4,6 @@ import type {
   BatteryState,
   EngineState,
   MotorState,
-  SimulatorConfig,
 } from './types';
 import { SignalSourceFactory } from './SignalSource';
 

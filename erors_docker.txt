@@ -1,0 +1,44 @@
+> [frontend 6/7] RUN npm run build:                                                                                                                                            
+0.373                                                                                                                                                                           
+0.373 > hybrid-lab@0.0.0 build                                                                                                                                                  
+0.373 > tsc -b && vite build                                                                                                                                                    
+0.373                                                                                                                                                                           
+5.388 src/App.tsx(374,46): error TS2322: Type '{ children: Element[]; onClick: () => void; accent: string; }' is not assignable to type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.388   Property 'accent' does not exist on type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.389 src/App.tsx(384,59): error TS2322: Type '{ children: Element[]; onClick: () => void; col: number; accent: string; }' is not assignable to type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.389   Property 'accent' does not exist on type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.389 src/App.tsx(394,51): error TS2322: Type '{ children: Element[]; onClick: () => void; accent: string; }' is not assignable to type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.389   Property 'accent' does not exist on type 'IntrinsicAttributes & { onClick: () => void; col?: number | undefined; children: ReactNode; }'.
+5.389 src/core/SimulationEngine.ts(7,3): error TS6196: 'SimulatorConfig' is declared but never used.
+5.389 src/shared/hooks/useSimulation.ts(13,49): error TS2554: Expected 0 arguments, but got 1.
+5.389 src/shared/hooks/useSimulation.ts(34,15): error TS2339: Property 'isRunning' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(37,47): error TS2339: Property 'engine' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(40,17): error TS2339: Property 'setEngineRpm' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(41,17): error TS2339: Property 'setMotorRpm' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(42,17): error TS2339: Property 'setBatterySoc' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(45,21): error TS2551: Property 'connectedTestPoint' does not exist on type 'SimulationStore'. Did you mean 'connectTestPoint'?
+5.389 src/shared/hooks/useSimulation.ts(47,19): error TS2339: Property 'addWaveformSample' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(65,13): error TS2339: Property 'setRunning' does not exist on type 'SimulationStore'.
+5.389 src/shared/hooks/useSimulation.ts(73,13): error TS2339: Property 'setRunning' does not exist on type 'SimulationStore'.
+5.389 src/shared/store/simulationStore.ts(61,11): error TS6133: 'get' is declared but its value is never read.
+------
+[+] up 0/2
+ ⠙ Image project-backend  Building                                                                                                                                          8.6s
+ ⠙ Image project-frontend Building                                                                                                                                          8.6s
+Dockerfile:6
+
+--------------------
+
+   4 |     RUN npm ci
+
+   5 |     COPY . .
+
+   6 | >>> RUN npm run build
+
+   7 |     
+
+   8 |     
+
+--------------------
+
+target frontend: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 2
