@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSimulationStore } from '../../application/stores/simulationStore';
+import { API_BASE_URL } from '../../infrastructure/config/api';
 
 const MODE_NAMES: Record<string, string> = {
   Hybrid: 'Параллельный', Series: 'Последовательный', EV: 'Электрический', Charging: 'Зарядка',
@@ -44,7 +45,7 @@ const StatisticsPanel: React.FC = () => {
 
   const downloadExcel = async () => {
     try {
-      const response = await fetch('http://localhost:8000/download');
+      const response = await fetch(`${API_BASE_URL}/download`);
       if (!response.ok) throw new Error('Failed to download');
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
