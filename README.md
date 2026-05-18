@@ -24,9 +24,9 @@ docker compose up --build
 
 | Сервис | URL |
 |--------|-----|
-| Frontend | http://localhost:3000 |
-| Backend API | http://localhost:8000 |
-| Swagger | http://localhost:8000/docs |
+| Frontend | https://hybrid-lab.duckdns.org |
+| Backend API | https://hybrid-lab.duckdns.org/api |
+| Swagger | https://hybrid-lab.duckdns.org/api/docs |
 
 Локальная разработка frontend:
 
