@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from datetime import datetime
 from pathlib import Path
@@ -204,6 +205,29 @@ async def get_logs_info():
 async def health_check():
     """Liveness check для Docker."""
     return {"status": "healthy"}
+
+
+@app.get("/download", tags=["Metrics"])
+async def download_excel():
+    """Скачать Excel файл с метриками."""
+    try:
+        if not EXCEL_FILE.exists():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Excel файл ещё не создан"
+            )
+        
+        return FileResponse(
+            path=EXCEL_FILE,
+            filename="metrics_log.xlsx",
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
+    except Exception as e:
+        logger.error(f"Ошибка при скачивании файла: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Ошибка при скачивании файла: {str(e)}"
+        )
 
 
 if __name__ == "__main__":

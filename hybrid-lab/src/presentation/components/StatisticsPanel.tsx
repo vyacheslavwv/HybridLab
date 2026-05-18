@@ -42,6 +42,25 @@ const StatisticsPanel: React.FC = () => {
   const { batterySoc, batteryVoltage, engineRpm, motorRpm, throttle, mode, waveformData } = s;
   const socColor = batterySoc > 60 ? 'var(--emerald)' : batterySoc > 30 ? 'var(--amber)' : 'var(--rose)';
 
+  const downloadExcel = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/download');
+      if (!response.ok) throw new Error('Failed to download');
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'metrics_log.xlsx';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading file:', error);
+      alert('Ошибка при скачивании файла');
+    }
+  };
+
   const section = (title: string, children: React.ReactNode) => (
     <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 14, paddingBottom: 14 }}>
       <div style={{ fontSize: 11, color: 'var(--muted)', marginBottom: 10 }}>{title}</div>
@@ -92,6 +111,46 @@ const StatisticsPanel: React.FC = () => {
         <Row label="Буфер"   value="512 pts" />
         <Row label="Частота" value="60 Hz" />
       </>)}
+
+      {/* Download Excel Button */}
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: 14, paddingBottom: 14 }}>
+        <button
+          onClick={downloadExcel}
+          style={{
+            width: '100%',
+            padding: '10px 12px',
+            borderRadius: 10,
+            background: 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.08) 100%)',
+            border: '1px solid rgba(34,197,94,0.25)',
+            color: 'var(--emerald)',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            transition: 'all 0.15s',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+          }}
+          onMouseEnter={(e) => {
+            const el = e.currentTarget as HTMLButtonElement;
+            el.style.background = 'rgba(34,197,94,0.25)';
+            el.style.borderColor = 'rgba(34,197,94,0.4)';
+          }}
+          onMouseLeave={(e) => {
+            const el = e.currentTarget as HTMLButtonElement;
+            el.style.background = 'linear-gradient(135deg, rgba(34,197,94,0.15) 0%, rgba(34,197,94,0.08) 100%)';
+            el.style.borderColor = 'rgba(34,197,94,0.25)';
+          }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Скачать Excel
+        </button>
+      </div>
     </div>
   );
 };

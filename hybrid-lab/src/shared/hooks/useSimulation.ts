@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useSimulationStore } from '../../application/stores/simulationStore';
-import { SimulationEngine } from '../core/SimulationEngine';
-import { SimulatorConfig } from '../core/types';
+import { SimulationEngine } from '../../core/SimulationEngine';
+import type { SimulatorConfig } from '../../core/types';
 
 /**
  * 🎣 useSimulation Hook

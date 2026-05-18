@@ -1,4 +1,4 @@
-import { ComponentConfig } from './types';
+import type { ComponentConfig } from './types';
 
 /**
  * 🔌 SignalSource — генератор сигналов для компонентов системы
@@ -8,7 +8,6 @@ import { ComponentConfig } from './types';
 
 export class SignalSource {
   private config: ComponentConfig;
-  private phase: number = 0;
 
   constructor(config: ComponentConfig) {
     this.config = config;

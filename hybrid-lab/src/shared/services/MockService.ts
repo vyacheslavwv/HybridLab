@@ -1,4 +1,4 @@
-import { SimulatorConfig, ComponentConfig } from '../core/types';
+import type { SimulatorConfig } from '../../core/types';
 
 /**
  * 🔌 MockService — заглушка для будущего API

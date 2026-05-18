@@ -1,4 +1,4 @@
-import {
+import type {
   SimulationState,
   SimulationInput,
   BatteryState,
@@ -15,13 +15,10 @@ import { SignalSourceFactory } from './SignalSource';
  */
 
 export class SimulationEngine {
-  private config: SimulatorConfig;
   private batterySource = SignalSourceFactory.createBatterySource();
   private motorSource = SignalSourceFactory.createMotorSource();
-  private engineSource = SignalSourceFactory.createEngineSource();
 
-  constructor(config: SimulatorConfig) {
-    this.config = config;
+  constructor() {
   }
 
   /**

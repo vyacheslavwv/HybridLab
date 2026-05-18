@@ -266,7 +266,7 @@ function DashboardPage({ go }: { go: (p: Page, m?: string) => void }) {
           { key: 'SOC',   val: `${s.batterySoc.toFixed(1)}%`,       color: socColor },
           { key: 'Мотор', val: `${s.motorRpm.toFixed(0)} об/мин`,   color: 'var(--indigo)' },
           { key: 'ДВС',   val: `${s.engineRpm.toFixed(0)} об/мин`,  color: 'var(--amber)' },
-        ].map((t, i) => (
+        ].map((t) => (
           <React.Fragment key={t.key}>
             <div style={{ width: 1, height: 14, background: 'rgba(255,255,255,0.07)', marginRight: 16 }} />
             <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginRight: 16 }}>
@@ -413,8 +413,8 @@ function DashboardPage({ go }: { go: (p: Page, m?: string) => void }) {
 
 // ── Bento helpers ─────────────────────────────────────────────
 
-function BentoCard({ onClick, col = 1, accent, children }: {
-  onClick: () => void; col?: number; accent?: string; children: React.ReactNode;
+function BentoCard({ onClick, col = 1, children }: {
+  onClick: () => void; col?: number; children: React.ReactNode;
 }) {
   const [hov, setHov] = useState(false);
   return (

@@ -99,7 +99,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           ...state.simulationState,
           throttle: Math.max(0, Math.min(1, value)),
         },
-      }));
+      } as Partial<SimulationStore>));
     },
 
     /**
@@ -117,7 +117,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           ...current.simulationState,
           mode,
         },
-      });
+      } as Partial<SimulationStore>);
     },
 
     /**
@@ -129,7 +129,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           ...state.simulationState,
           isRunning: true,
         },
-      }));
+      } as Partial<SimulationStore>));
     },
 
     /**
@@ -141,7 +141,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           ...state.simulationState,
           isRunning: false,
         },
-      }));
+      } as Partial<SimulationStore>));
     },
 
     /**
@@ -153,7 +153,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           ...DEFAULT_STATE,
           mode: get().hybridMode,
         },
-      });
+      } as Partial<SimulationStore>);
       if (engine) {
         engine.reset();
       }
@@ -168,7 +168,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
         simulationState: DEFAULT_STATE,
         hybridMode: 'Hybrid',
         physics: DEFAULT_PHYSICS,
-      });
+      } as Partial<SimulationStore>);
     },
 
     /**
@@ -206,7 +206,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
             ? newWaveformData[newWaveformData.length - 1] || 0
             : 0,
         },
-      });
+      } as Partial<SimulationStore>);
     },
 
     /**
@@ -219,7 +219,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           connectedTestPoint: pointId,
           waveformData: [], // очищаем предыдущие данные
         },
-      }));
+      } as Partial<SimulationStore>));
     },
 
     /**
@@ -232,7 +232,7 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
           connectedTestPoint: null,
           waveformData: [],
         },
-      }));
+      } as Partial<SimulationStore>));
     },
 
     /**

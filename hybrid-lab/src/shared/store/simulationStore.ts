@@ -1,13 +1,13 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import {
+import type {
   SimulationState,
   BatteryState,
   EngineState,
   MotorState,
   WaveformBuffer,
   SimulationInput,
-} from '../core/types';
+} from '../../core/types';
 
 /**
  * 🔄 Zustand Store для управления симуляцией

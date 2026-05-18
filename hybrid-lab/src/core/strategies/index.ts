@@ -1,4 +1,4 @@
-import { SimulationState, SimulationInput, HybridStrategy } from '../types';
+import type { SimulationState, SimulationInput, HybridStrategy } from '../types';
 
 /**
  * 📋 HybridModeStrategy — абстрактный класс для всех режимов
@@ -10,7 +10,7 @@ abstract class HybridModeStrategy implements HybridStrategy {
   abstract execute(state: SimulationState, input: SimulationInput): SimulationState;
 
   protected calculateEfficiency(state: SimulationState): number {
-    const { battery, motor, engine } = state;
+    const { battery, motor } = state;
     if (battery.soc === 0 || motor.rpm === 0) return 0;
     return Math.min(100, (motor.torque / (battery.voltage / 100)) * 10);
   }
