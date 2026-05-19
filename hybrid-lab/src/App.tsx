@@ -10,6 +10,7 @@ import TopologyBuilder from './presentation/pages/TopologyBuilder';
 import LiteraturePage from './presentation/pages/LiteraturePage';
 import DiagnosticsPage from './presentation/pages/DiagnosticsPage';
 import GlossaryPage from './presentation/pages/GlossaryPage';
+import UnsupportedDeviceModal from './presentation/components/UnsupportedDeviceModal';
 import './index.css';
 import './presentation/styles/globals.css';
 
@@ -93,6 +94,7 @@ export function App() {
 
   return (
     <div style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: 'var(--bg)', color: 'var(--text)', position: 'relative' }}>
+      <UnsupportedDeviceModal />
 
       {/* ── Gradient mesh ── */}
       <div aria-hidden style={{
