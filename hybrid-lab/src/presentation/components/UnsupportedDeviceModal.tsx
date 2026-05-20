@@ -1,17 +1,12 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import { isMobileDevice } from '../../shared/utils/device';
 
-const DISMISS_KEY = 'hybridlab-mobile-warning-dismissed';
-
+/** Показываем предупреждение при каждой полной загрузке страницы на мобильном; закрытие только до следующей перезагрузки. */
 export default function UnsupportedDeviceModal() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const update = () => {
-      if (sessionStorage.getItem(DISMISS_KEY)) {
-        setOpen(false);
-        return;
-      }
       setOpen(isMobileDevice());
     };
 
@@ -21,7 +16,6 @@ export default function UnsupportedDeviceModal() {
   }, []);
 
   const dismiss = () => {
-    sessionStorage.setItem(DISMISS_KEY, '1');
     setOpen(false);
   };
 

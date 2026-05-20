@@ -10,5 +10,5 @@ services:
   backend:
     build: ./metrics-backend
     ports:
-      - "8000:8000" # Проверь, какой порт в main.py у бэка (обычно 8000 для FastAPI/Uvicorn)
+      - "8000:8000" 
     restart: always

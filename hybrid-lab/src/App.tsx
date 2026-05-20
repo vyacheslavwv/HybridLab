@@ -29,7 +29,25 @@ const icons = {
   arrow:   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>,
   back:    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>,
   check:   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M20 6 9 17l-5-5"/></svg>,
+  chevronRight: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m10 6 6 6-6 6"/></svg>,
+  chevronLeft:  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m14 6-6 6 6 6"/></svg>,
 };
+
+const NARROW_SIDEBAR_MQ = '(max-width: 768px)';
+
+function useNarrowSidebar() {
+  const [narrow, setNarrow] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(NARROW_SIDEBAR_MQ).matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(NARROW_SIDEBAR_MQ);
+    const onChange = () => setNarrow(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return narrow;
+}
 
 const NAV: { id: Page; label: string; icon: React.ReactNode; soon?: boolean }[] = [
   { id: 'dashboard',   label: 'Главная',         icon: icons.grid },
@@ -74,7 +92,13 @@ function ArcGauge({ value, max, color, size = 80, sw = 3.5 }: {
 export function App() {
   const [page, setPage] = useState<Page>('dashboard');
   const [moduleId, setModuleId] = useState<string | null>(null);
+  const narrowSidebar = useNarrowSidebar();
+  /** На узком экране: false — только иконки в одну «линию», true — полная ширина как на десктопе */
+  const [sidebarExpandedMobile, setSidebarExpandedMobile] = useState(false);
   const { simulationState, pauseSimulation } = useSimulationStore();
+
+  const sidebarRailOnly = narrowSidebar && !sidebarExpandedMobile;
+  const sidebarWidth = sidebarRailOnly ? 58 : 210;
 
   useEffect(() => {
     if (!simulationState.isRunning) return;
@@ -108,14 +132,20 @@ export function App() {
 
       {/* ── Sidebar ── */}
       <aside style={{
-        width: 210, flexShrink: 0, display: 'flex', flexDirection: 'column',
+        width: sidebarWidth, flexShrink: 0, display: 'flex', flexDirection: 'column',
         background: 'rgba(255,255,255,0.018)', borderRight: '1px solid rgba(255,255,255,0.06)',
         backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)',
         position: 'relative', zIndex: 2,
+        transition: 'width 0.22s ease',
       }}>
         {/* Logo */}
-        <div style={{ padding: '18px 16px 14px', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{
+          padding: sidebarRailOnly ? '12px 8px 10px' : '18px 16px 14px',
+          borderBottom: '1px solid rgba(255,255,255,0.05)',
+          display: 'flex',
+          justifyContent: sidebarRailOnly ? 'center' : undefined,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: sidebarRailOnly ? 0 : 10 }}>
             {/* Badge with bolt icon */}
             <div style={{
               width: 34, height: 34, borderRadius: 10, flexShrink: 0,
@@ -135,57 +165,93 @@ export function App() {
                 <path d="M13 2L4 13h7l-1 9 9-11h-7l1-9z" fill="white" fillOpacity="0.95" strokeWidth="0"/>
               </svg>
             </div>
-            <div>
-              <div style={{ fontSize: 14, fontWeight: 650, color: 'var(--text)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>Hybrid Lab</div>
-              <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 1, letterSpacing: '0.02em' }}>v2 · 2026</div>
-            </div>
+            {!sidebarRailOnly && (
+              <div>
+                <div style={{ fontSize: 14, fontWeight: 650, color: 'var(--text)', lineHeight: 1.2, letterSpacing: '-0.01em' }}>Hybrid Lab</div>
+                <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 1, letterSpacing: '0.02em' }}>v2 · 2026</div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '10px 8px' }}>
+        <nav style={{ flex: 1, overflowY: 'auto', padding: sidebarRailOnly ? '8px 6px' : '10px 8px' }}>
           {NAV.map(item => {
             const active = page === item.id;
             return (
               <button key={item.id} onClick={() => go(item.id)}
-                className={`nav-item ${active ? 'active' : ''}`}
+                className={`nav-item ${active ? 'active' : ''}${sidebarRailOnly ? ' nav-item--rail' : ''}`}
                 title={item.label}
+                aria-label={item.label}
               >
                 <span style={{ opacity: active ? 1 : 0.65, flexShrink: 0 }}>{item.icon}</span>
-                <span style={{ flex: 1, lineHeight: 1 }}>{item.label}</span>
-                {active && (
-                  <span style={{
-                    width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
-                    background: 'var(--indigo)', display: 'inline-block',
-                  }} />
+                {!sidebarRailOnly && (
+                  <>
+                    <span className="nav-item__label" style={{ flex: 1, lineHeight: 1 }}>{item.label}</span>
+                    {active && (
+                      <span className="nav-item__tail" style={{
+                        width: 5, height: 5, borderRadius: '50%', flexShrink: 0,
+                        background: 'var(--indigo)', display: 'inline-block',
+                      }} />
+                    )}
+                  </>
                 )}
               </button>
             );
           })}
         </nav>
 
-        {/* Status pill */}
-        <div style={{ padding: '12px 10px', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
-            borderRadius: 10, padding: '7px 10px',
-          }}>
+        {/* Status + свернуть/развернуть на мобильном */}
+        <div style={{
+          padding: sidebarRailOnly ? '10px 6px' : '12px 10px',
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          display: 'flex', flexDirection: 'column', gap: 8,
+        }}>
+          <div
+            title={simulationState.isRunning ? 'Симуляция запущена' : 'Симуляция idle'}
+            style={{
+              display: 'flex', alignItems: 'center',
+              justifyContent: sidebarRailOnly ? 'center' : undefined,
+              gap: sidebarRailOnly ? 0 : 8,
+              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)',
+              borderRadius: 10,
+              padding: sidebarRailOnly ? '8px 6px' : '7px 10px',
+            }}
+          >
             <span className={simulationState.isRunning ? 'pulse-dot' : ''} style={{
               width: 7, height: 7, borderRadius: '50%', flexShrink: 0,
               background: simulationState.isRunning ? 'var(--emerald)' : 'var(--subtle)',
               display: 'inline-block',
             }} />
-            <span className="jb" style={{ fontSize: 10, color: simulationState.isRunning ? 'var(--emerald)' : 'var(--muted)' }}>
-              {simulationState.isRunning ? 'SIM · RUNNING' : 'SIM · IDLE'}
-            </span>
+            {!sidebarRailOnly && (
+              <span className="jb" style={{ fontSize: 10, color: simulationState.isRunning ? 'var(--emerald)' : 'var(--muted)' }}>
+                {simulationState.isRunning ? 'SIM · RUNNING' : 'SIM · IDLE'}
+              </span>
+            )}
           </div>
+          {narrowSidebar && (
+            <button
+              type="button"
+              onClick={() => setSidebarExpandedMobile((v) => !v)}
+              title={sidebarExpandedMobile ? 'Только иконки' : 'Показать подписи'}
+              aria-expanded={sidebarExpandedMobile}
+              aria-label={sidebarExpandedMobile ? 'Свернуть меню до иконок' : 'Развернуть меню с подписями'}
+              className="nav-item nav-item--rail"
+              style={{
+                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(255,255,255,0.04)',
+                color: 'var(--muted)',
+              }}
+            >
+              {sidebarExpandedMobile ? icons.chevronLeft : icons.chevronRight}
+            </button>
+          )}
         </div>
       </aside>
 
       {/* ── Main ── */}
-      <main style={{ flex: 1, overflowY: 'auto', position: 'relative', zIndex: 1 }}>
-        <div style={{ padding: '32px 36px' }}>
+      <main style={{ flex: 1, overflowY: 'auto', position: 'relative', zIndex: 1, minWidth: 0 }}>
+        <div style={{ padding: narrowSidebar ? '16px 14px' : '32px 36px' }}>
           {page === 'dashboard'   && <DashboardPage go={go} />}
           {page === 'simulator'   && <SimulatorPage moduleId={moduleId} onBack={back} />}
           {page === 'tco'         && <Sub title="Калькулятор TCO" onBack={back}><TCOCalculator /></Sub>}
